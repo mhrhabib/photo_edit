@@ -1,3 +1,11 @@
+import 'package:get_storage/get_storage.dart';
+import 'package:photo_edit/presentation/login_screen/controller/login_controller.dart';
+import 'package:photo_edit/presentation/login_screen/login_screen.dart';
+import 'package:photo_edit/presentation/login_screen/models/login_model.dart';
+import 'package:photo_edit/presentation/profile_screen/controller/profile_controller.dart';
+import 'package:photo_edit/presentation/profile_screen/profile_screen.dart';
+
+import '../speech_to_text_screen/speech_to_text_screen.dart';
 import 'controller/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
@@ -8,28 +16,40 @@ import 'package:photo_edit/widgets/app_bar/appbar_title.dart';
 import 'package:photo_edit/widgets/app_bar/custom_app_bar.dart';
 import 'package:photo_edit/widgets/custom_bottom_bar.dart';
 import 'package:photo_edit/widgets/custom_elevated_button.dart';
+import 'package:get/get.dart';
 
 // ignore_for_file: must_be_immutable
-class DashboardScreen extends GetWidget<DashboardController> {
-  const DashboardScreen({Key? key})
+class DashboardScreen extends StatelessWidget{
+   DashboardScreen({Key? key})
       : super(
           key: key,
         );
 
+  //final ProfileController _profileController = Get.put(ProfileController());
+
+
   @override
   Widget build(BuildContext context) {
+    GetStorage storage = GetStorage();
+
     mediaQueryData = MediaQuery.of(context);
 
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
           leadingWidth: 48.h,
-          leading: AppbarImage(
-            svgPath: ImageConstant.imgMenu,
-            margin: EdgeInsets.only(
-              left: 24.h,
-              top: 16.v,
-              bottom: 16.v,
+          leading: GestureDetector(
+            onTap: (){
+              Get.to(()=>LoginScreen());
+              print("Habijabi");
+            },
+            child: AppbarImage(
+              svgPath: ImageConstant.imgMenu,
+              margin: EdgeInsets.only(
+                left: 24.h,
+                top: 16.v,
+                bottom: 16.v,
+              ),
             ),
           ),
           centerTitle: true,
@@ -38,6 +58,9 @@ class DashboardScreen extends GetWidget<DashboardController> {
           ),
           actions: [
             AppbarCircleimage(
+              onTap: (){
+                Get.to(ProfileScreen());
+              },
               imagePath: ImageConstant.imgEllipse5,
               margin: EdgeInsets.symmetric(
                 horizontal: 23.h,
@@ -91,24 +114,32 @@ class DashboardScreen extends GetWidget<DashboardController> {
                       ),
                       child: SizedBox(
                         width: 137.h,
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.pushNamed(context, AppRoutes.loginScreen);
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "lbl_good_morning".tr,
+                                  style: theme.textTheme.titleMedium,
+                                ),
+                                TextSpan(
+                                  text: " \n".tr,
+                                  style: CustomTextStyles.titleMedium16_1,
+                                ),
                               TextSpan(
-                                text: "lbl_good_morning".tr,
-                                style: theme.textTheme.titleMedium,
-                              ),
-                              TextSpan(
-                                text: " \n".tr,
-                                style: CustomTextStyles.titleMedium16_1,
-                              ),
-                              TextSpan(
-                                text: "lbl_ashikur_rahman".tr,
-                                style: CustomTextStyles.titleMediumMedium,
-                              ),
-                            ],
+                                 // text: _profileController.fetchProfileData()?? ,
+                                text: "Tasneem",
+                                  style: CustomTextStyles.titleMediumMedium,
+                                ),
+
+
+                              ],
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.left,
                         ),
                       ),
                     ),
@@ -124,57 +155,67 @@ class DashboardScreen extends GetWidget<DashboardController> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 25.v),
-                            decoration: AppDecoration.gradient.copyWith(
-                              borderRadius: BorderRadiusStyle.roundedBorder10,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 13.v,
-                                    bottom: 9.v,
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(context, AppRoutes.speechToTextScreen);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 25.v),
+                              decoration: AppDecoration.gradient.copyWith(
+                                borderRadius: BorderRadiusStyle.roundedBorder10,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 13.v,
+                                      bottom: 9.v,
+                                    ),
+                                    child: Text(
+                                      "lbl_speech_to_text2".tr,
+                                      style: theme.textTheme.titleMedium,
+                                    ),
                                   ),
-                                  child: Text(
-                                    "lbl_speech_to_text2".tr,
-                                    style: theme.textTheme.titleMedium,
+                                  CustomImageView(
+                                    svgPath: ImageConstant.imgMic,
+                                    height: 30.adaptSize,
+                                    width: 30.adaptSize,
                                   ),
-                                ),
-                                CustomImageView(
-                                  svgPath: ImageConstant.imgMic,
-                                  height: 30.adaptSize,
-                                  width: 30.adaptSize,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 12.v),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 25.v),
-                            decoration: AppDecoration.gradient.copyWith(
-                              borderRadius: BorderRadiusStyle.roundedBorder10,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 13.v,
-                                    bottom: 9.v,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.textToSpeechTwoScreen);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 25.v),
+                              decoration: AppDecoration.gradient.copyWith(
+                                borderRadius: BorderRadiusStyle.roundedBorder10,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 13.v,
+                                      bottom: 9.v,
+                                    ),
+                                    child: Text(
+                                      "lbl_text_to_speech2".tr,
+                                      style: theme.textTheme.titleMedium,
+                                    ),
                                   ),
-                                  child: Text(
-                                    "lbl_text_to_speech2".tr,
-                                    style: theme.textTheme.titleMedium,
+                                  CustomImageView(
+                                    svgPath: ImageConstant.imgVolume,
+                                    height: 30.adaptSize,
+                                    width: 30.adaptSize,
                                   ),
-                                ),
-                                CustomImageView(
-                                  svgPath: ImageConstant.imgVolume,
-                                  height: 30.adaptSize,
-                                  width: 30.adaptSize,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 12.v),
@@ -266,6 +307,8 @@ class DashboardScreen extends GetWidget<DashboardController> {
             ),
           ),
         ),
+
+
         bottomNavigationBar: CustomBottomBar(
           onChanged: (BottomBarEnum type) {},
         ),

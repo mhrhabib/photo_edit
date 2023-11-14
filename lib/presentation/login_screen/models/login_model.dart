@@ -1,3 +1,26 @@
-/// This class defines the variables used in the [login_screen],
-/// and is typically used to hold data that is passed between different parts of the application.
-class LoginModel { }
+
+class Login {
+  bool? status;
+  int? code;
+  String? message;
+  String? token;
+
+  Login({this.status, this.code, this.message, this.token});
+
+  Login.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    code = json['code'];
+    message = json['message'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['code'] = this.code;
+    data['message'] = this.message;
+    data['token'] = this.token;
+    return data;
+  }
+}
+

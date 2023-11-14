@@ -1,3 +1,5 @@
+import 'package:avatar_glow/avatar_glow.dart';
+
 import 'controller/speech_to_text_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_edit/core/app_export.dart';
@@ -9,17 +11,18 @@ import 'package:photo_edit/widgets/custom_bottom_bar.dart';
 import 'package:photo_edit/widgets/custom_elevated_button.dart';
 import 'package:photo_edit/widgets/custom_icon_button.dart';
 
-// ignore_for_file: must_be_immutable
-class SpeechToTextScreen extends GetWidget<SpeechToTextController> {
-  const SpeechToTextScreen({Key? key})
-      : super(
-          key: key,
-        );
+class SpeechToTextScreen extends StatefulWidget {
+
+  @override
+  State<SpeechToTextScreen> createState() => _SpeechToTextScreenState();
+}
+
+class _SpeechToTextScreenState extends State<SpeechToTextScreen> {
+  final SpeechToTextController controller = Get.put(SpeechToTextController());
 
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
-
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
@@ -72,7 +75,21 @@ class SpeechToTextScreen extends GetWidget<SpeechToTextController> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(height: 207.v),
+                        SizedBox(height: 207.v, child: ListView(
+                          children:[
+                            Text(
+                              controller.text,
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: Color(0xFF4B4B4B),
+                                fontSize: 11.11,
+                                fontFamily: 'Open Sans',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                            
+                          ] 
+                        ),),
                         CustomIconButton(
                           height: 32.adaptSize,
                           width: 32.adaptSize,
@@ -112,11 +129,44 @@ class SpeechToTextScreen extends GetWidget<SpeechToTextController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 54.v),
-                  CustomImageView(
-                    svgPath: ImageConstant.imgMicOnprimary,
-                    height: 48.adaptSize,
-                    width: 48.adaptSize,
+                   AvatarGlow(
+                    endRadius: 75.0,
+                    animate: controller.isListening ,
+                    duration: Duration(milliseconds: 2000),
+                    glowColor: Colors.blue,
+                    repeat: true,
+                    repeatPauseDuration: Duration(microseconds: 100),
+                    showTwoGlows: true,
+                    child: GestureDetector(
+                      onTapDown: (details) async {
+                        if (controller.isListening == false) {
+                          var available =
+                              await controller.speechToText.initialize();
+                          if (available) {
+                            setState(() {
+                              controller.isListening = true;
+                            controller.speechToText.listen(onResult: (result) {
+                              setState(() {
+                                controller.text = result.recognizedWords;
+                              });
+                              
+                            });
+                            });
+                            
+                          }
+                        }
+                      },
+                      onTapUp: (details) {
+                        controller.isListening = false;
+                        controller.speechToText.stop();
+                        
+                      },
+                      child: CustomImageView(
+                        svgPath: ImageConstant.imgMicOnprimary,
+                        height: 48.adaptSize,
+                        width: 48.adaptSize,
+                      ),
+                    ),
                   ),
                 ],
               ),

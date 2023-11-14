@@ -77,7 +77,8 @@ class TextToSpeechScreen extends GetWidget<TextToSpeechController> {
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 2.v),
                               child: Text(
-                                "lbl_us_female_1".tr,
+                              // "lbl_us_female_1".tr,
+                              "Habijabi",
                                 style: CustomTextStyles.labelLargePrimary,
                               ),
                             ),

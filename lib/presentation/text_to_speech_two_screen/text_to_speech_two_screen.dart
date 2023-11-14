@@ -129,36 +129,41 @@ class TextToSpeechTwoScreen extends GetWidget<TextToSpeechTwoController> {
                                   theme.colorScheme.onPrimary.withOpacity(1),
                             ),
                             SizedBox(height: 19.v),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: CustomElevatedButton(
-                                    text: "lbl_save_as".tr,
-                                    margin: EdgeInsets.symmetric(vertical: 8.v),
-                                    rightIcon: Container(
-                                      margin: EdgeInsets.only(left: 4.h),
-                                      child: CustomImageView(
-                                        svgPath: ImageConstant.imgContrast,
+                            GestureDetector(
+                              onTap: (() {
+                                controller.speak(controller.pasteyourtextheController.text);
+                              }),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: CustomElevatedButton(
+                                      text: "lbl_save_as".tr,
+                                      margin: EdgeInsets.symmetric(vertical: 8.v),
+                                      rightIcon: Container(
+                                        margin: EdgeInsets.only(left: 4.h),
+                                        child: CustomImageView(
+                                          svgPath: ImageConstant.imgContrast,
+                                        ),
                                       ),
+                                      buttonStyle: CustomButtonStyles.none,
+                                      decoration: CustomButtonStyles
+                                          .gradientPrimaryToDeepPurpleTL20Decoration,
+                                      buttonTextStyle:
+                                          CustomTextStyles.labelLargeOnPrimary,
                                     ),
-                                    buttonStyle: CustomButtonStyles.none,
-                                    decoration: CustomButtonStyles
-                                        .gradientPrimaryToDeepPurpleTL20Decoration,
-                                    buttonTextStyle:
-                                        CustomTextStyles.labelLargeOnPrimary,
                                   ),
-                                ),
-                                CustomIconButton(
-                                  height: 57.adaptSize,
-                                  width: 57.adaptSize,
-                                  margin: EdgeInsets.only(left: 8.h),
-                                  padding: EdgeInsets.all(9.h),
-                                  child: CustomImageView(
-                                    svgPath: ImageConstant.imgPlayarrow,
+                                  CustomIconButton(
+                                    height: 57.adaptSize,
+                                    width: 57.adaptSize,
+                                    margin: EdgeInsets.only(left: 8.h),
+                                    padding: EdgeInsets.all(9.h),
+                                    child: CustomImageView(
+                                      svgPath: ImageConstant.imgPlayarrow,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
